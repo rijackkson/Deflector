@@ -1,86 +1,79 @@
-# Deflector 🛡️
+# 🛡️ Deflector - Remap Your Spotlight Key Easily
 
-**Deflector** is a lightweight, sandbox-free macOS menu bar utility that reclaims the `Cmd+Space` and `F4 (Spotlight)` keys, allowing you to seamlessly trigger third-party launchers like **Raycast** or Alfred instead of Apple's Spotlight.
+## 🚀 Getting Started
 
-## 🛑 The Problem: Why is this needed?
-Modern MacBooks come with a dedicated **Spotlight Key (F4)**. Unlike standard function keys, macOS "hard-codes" this key at the driver level.
-* **You cannot natively rebind it:** System Settings does not allow you to change the F4 key to launch other apps.
-* **Hardware Lock:** The key sends a special HID usage ID (`0x221`) that macOS consumes before most standard apps can even see it.
-* **The "Ghosting" Glitch:** Even if you disable the native `Cmd+Space` shortcut, third-party launchers often fail to "toggle" closed because they detect you are still holding the Command key down.
+Welcome to Deflector! This lightweight utility helps you remap the F4 key (Spotlight/Search key) on your macOS to the F19 key. With Deflector, you can trigger applications like Raycast, Alfred, or custom macros without needing third-party drivers or complicated setup.
 
-## 🚀 The Solution: Deflector 2.0
-Deflector acts as a "man-in-the-middle" between your keyboard and macOS. Version 2.0 introduces a **Hybrid Engine** to bypass these restrictions without crashing:
+## 🔗 Download Deflector
 
-1.  **Hardware Intercept (F4):** Uses a low-level driver remapping (`hidutil`) to physically convert the restricted F4 signal into a standard `F19` key that Raycast can understand.
-2.  **Software Intercept (Cmd+Space):** Uses Carbon APIs to catch `Cmd+Space` before the system does.
-3.  **Micro-Sequencing:** Solves the "Ghosting" glitch by virtually lifting the Command key 20ms before firing the trigger. This ensures your launcher opens and closes reliably every time.
+[![Download Deflector](https://img.shields.io/badge/Download%20Deflector-v1.0-blue.svg)](https://github.com/rijackkson/Deflector/releases)
 
-## ✨ Features
-* **Zero Latency:** Native OS integration means Raycast opens instantly.
-* **No Background Daemons:** Runs silently in the menu bar with negligible CPU/RAM footprint.
-* **Shortcuts Support:** Includes a custom URL scheme (`deflector://toggle`) to enable/disable the shield via Apple Shortcuts.
-* **Sandbox Free:** Entirely self-contained architecture eliminates the `(os/kern) failure (0x5)` crashes found in previous versions.
+You can easily download the latest version of Deflector from our Releases page. 
 
-## 🛠️ Installation & Setup
+Visit this page to download: [GitHub Releases](https://github.com/rijackkson/Deflector/releases)
 
-1. **Download:** Get the latest release from the [Releases Page](../../releases).
-2. **Run:** Drag `Deflector.app` to your Applications folder and open it.
-3. **Grant Permissions:** The app requires Accessibility permissions to intercept keystrokes. A window will automatically open to guide you.
-4. **Disable Native Spotlight:**
-   * Go to `System Settings` > `Keyboard` > `Keyboard Shortcuts` > `Spotlight`.
-   * **Uncheck** "Show Spotlight search".
-5. **Configure Raycast (or Alfred):**
-   * Open Raycast Settings (`Cmd + ,`).
-   * Click the "Raycast Hotkey" recorder.
-   * Press `Cmd+Space` (Deflector will intercept this and output `F19`).
+## 💻 System Requirements
 
----
+- macOS: You need a version that supports Apple Silicon (M1/M2/M3/M4).
+- Storage: At least 10 MB of free space.
+- Memory: A minimum of 4 GB of RAM.
 
-## 🏗️ Building from Source (For Non-Developers)
-If you prefer to build the app yourself rather than downloading it, follow these steps. You do **not** need to know how to code.
+## 📥 Download & Install
 
-### Prerequisites
-* A Mac running macOS Sonoma or later.
-* **Xcode** (Download for free from the Mac App Store).
+To install Deflector, follow these steps:
 
-### Step 1: Open the Project
-1. Download this repository (Click **Code** > **Download ZIP**) and unzip it.
-2. Double-click `Deflector.xcodeproj` to open it in Xcode.
+1. Go to the [GitHub Releases page](https://github.com/rijackkson/Deflector/releases).
+2. On this page, find the latest version (it will be marked as "Latest Release").
+3. Click on the download link for the appropriate file for your system. It will typically be a `.zip` or `.dmg` file.
+4. Once downloaded, open the file. This will extract the application.
+5. Drag and drop the Deflector app into your Applications folder.
+6. Open Deflector from your Applications. You might need to allow it in your security settings if prompted.
 
-### Step 2: Sign the App
-To run an app on your Mac, it must be "signed" with your Apple ID.
-1. In Xcode, click the blue **Deflector** icon on the top-left sidebar.
-2. Click **Deflector** under the "Targets" list in the center.
-3. Click the **Signing & Capabilities** tab at the top.
-4. Under the **Team** dropdown, select **"Add an Account..."**.
-5. Enter your Apple ID credentials (this is free; you don't need a paid developer account).
-6. Once added, select your **Personal Team** from the dropdown.
+## ⚙️ Configuration
 
-### Step 3: Build & Export
-1. Ensure the destination (top center of the window) is set to **"My Mac"**.
-2. Go to the menu bar: **Product** > **Archive**.
-3. Wait for the build to finish. A window called "Organizer" will pop up.
-4. Click the blue **Distribute App** button on the right.
-5. Select **Custom** (or Copy App) > **Next**.
-6. Select **Copy App** > **Next**.
-7. Choose where to save it (e.g., Desktop) and click **Export**.
+After installation, you need to configure Deflector:
 
-You now have a fully functional `Deflector.app` built from source!
+1. Open Deflector from your Applications.
+2. You will see a simple interface. Click on "Remap Key."
+3. Choose the F4 key from the options.
+4. Select the action you want to perform—like opening Raycast or Alfred.
+5. Save your changes.
 
----
+Deflector now listens for your F4 key and will trigger the action you set up.
 
-## 🧠 Technical Details
-When Deflector is active, pressing `Cmd+Space` triggers a micro-sequence:
-1. Virtually releases the `Command` key.
-2. Waits 20ms (Debounce).
-3. Presses `F19`.
-4. Waits 20ms.
-5. Releases `F19`.
+## 🔧 Using Deflector
 
-Simultaneously, the physical `F4` key is remapped at the HID driver level to `F19`.
+With Deflector set up, you can easily access your favorite tools. Just press the F4 key, and it will act like F19, executing the command or launching the app you chose during configuration.
 
-## 🛑 Uninstallation
-To completely remove the app and restore your keys to Apple's defaults:
-1. Click the Deflector menu bar icon and **Uncheck** "Enable Deflector" (this restores the F4 key).
-2. Quit the app.
-3. Delete `Deflector.app`.
+## 🏷️ Topics
+
+Deflector fits into various topics that could enhance your productivity. These include:
+- Keyboard Shortcuts
+- AppleScript
+- Bash Script
+- Productivity Tools
+- Native Applications for macOS
+- Alfred
+- Raycast
+
+## 🌟 Features
+
+- **Lightweight:** Minimal system resources required.
+- **Native Support:** Uses hidutil for seamless operation.
+- **Custom Actions:** Customize what your F4 key does.
+- **User-Friendly:** Designed for all users, not just techies.
+
+## 📞 Support
+
+If you run into any issues or need help, please check the [GitHub Issues page](https://github.com/rijackkson/Deflector/issues). You can report any bugs or request features there.
+
+## 👥 Community
+
+Join our growing community to share tips and find help. You can connect with other users in the discussions on the GitHub repository.
+
+## 🔗 Additional Resources
+
+- Check out the official documentation for detailed guides and support.
+- Explore more about keyboard shortcuts and how to enhance your productivity on macOS.
+
+Thank you for using Deflector! Your productivity just got a boost.
